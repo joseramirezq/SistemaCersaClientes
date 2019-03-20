@@ -1,35 +1,22 @@
 <!--titulo del curso-->
+
+
 <div class="row ">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h3 class="text-primary">
+                
                     <?php
                         require_once("./controladores/cursoControlador.php");
                         $insCurso = new cursoControlador();
-                      //  $variable=$_GET['Curso'];
+                     
                        // $variable=1;
-                    echo $insCurso->mostrar_sesion_cursos_controlador();
+                    echo $insCurso->sesion_curso_exitoso_controlador();
 
                     ?>
                  
-                    <div class="btn-group dropdown float-right">
-                        <button type="button" class="btn btn-success" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#agregarcli">
-                            Agregar Cliente
-                        </button>
-
-                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            En línea
-                        </button>
-                        <div class="dropdown-menu ">
-                            <a class="dropdown-item text-danger btn-cerrar-curso" href="<?php echo $_SESSION['curso']?>">
-                                <i class="fa fa-reply fa-fw"></i>
-                                <p class="">Cerrar Session</p>
-                            </a>
-                        </div>
-                    </div>
-                </h3>
-            </div>
+                    
+             </div>
         </div>
     </div>
 </div>

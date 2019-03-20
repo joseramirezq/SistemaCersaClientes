@@ -153,13 +153,12 @@ class cursoControlador extends cursoModelo
     //mostrar cursos en el inicio
     public function mostrar_cursos_controlador()
     {
+        
         $tarjeta = "";
         $conexion = mainModel::conectar();
         $datos = $conexion->query("
-            SELECT * FROM especialidad WHERE estado_actual=0 ORDER BY fecha_registro");
-
-
-            
+            SELECT * FROM especialidad WHERE estado_actual=0  ORDER BY 	fecha_inicio");
+    
         $datos = $datos->fetchAll();
         foreach ($datos as $rows) {
 
@@ -206,9 +205,46 @@ class cursoControlador extends cursoModelo
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                   <div class="btn-group" role="group" aria-label="First group">
-                   <a href='.$rows['idespecialidad'].' class="btn btn-success btn-curso-system"><i class="fa fa-star-o"></i> Disponible</a>
-                    <a href="http://"><button type="button" class="btn btn-dark"><i class="fa fa-eye"></i> Ver</button></a>
+                   <div class="btn-group" role="group" aria-label="First group">';
+
+                 // if($rows['sesion']==$_SESSION['codigo_srcp']){
+                 //   $tarjeta .= '<a href='.$rows['idespecialidad'].' class="btn btn-primary btn-curso-system"><i class="fa fa-star-o"></i> En Linea </a>
+                 //   ';
+                 // }else  if($rows['sesion']==0){
+                 //   $tarjeta .= '<a href='.$rows['idespecialidad'].' class="btn btn-success btn-curso-system"><i class="fa fa-star-o"></i> Disponible </a>
+                //    ';
+                //  }else if($rows['sesion']!=$_SESSION['codigo_srcp']){
+                //        $tarjeta .= '<a href='.$rows['idespecialidad'].' class="btn btn-danger btn-curso-system"><i class="fa fa-star-o"></i> Ocupado </a>
+                  //  ';
+                 // if($rows['sesion']!="0" && $rows['sesion']!=$_SESSION['codigo_srcp'] ) {
+                //    $tarjeta .= '<a href="" class="btn btn-danger"><i class="fa fa-star-o"></i> Ocupado </a>
+                //     ';
+               //  }  
+               
+        
+               // if($rows['sesion']=="0"){
+                //  $tarjeta .= '<a href="sesioncurso?Curso='.$rows['idespecialidad'].'" class="btn btn-primary"><i class="fa fa-star-o"></i> Disponible </a>
+               // ';
+              // }
+               if($rows['sesion']==$_SESSION['codigo_srcp']){
+                $tarjeta .= '<a href="sesioncurso" class="btn btn-success"><i class="fa fa-star-o"></i> En linea</a>
+               ';
+             }
+                if($rows['sesion']=="disponible"){
+                  $tarjeta .= '<form action="'.SERVERURL.'ajax/cursoAjax.php" method="POST">
+                    <input type="hidden" name="codigocurso" value="'.$rows['idespecialidad'].'">
+                    <input type="hidden" name="codigousuario" value="'.$_SESSION['codigo_srcp'].'">
+                    <button type="submit" name="ocuparcurso"  class="btn btn-primary"><i class="fa fa-star-o"></i> Disponible </button>
+                   </form>  ';
+                }
+
+                if($rows['sesion']!=$_SESSION['codigo_srcp'] && $rows['sesion']!="disponible"){
+                    $tarjeta .= '<a href="" class="btn btn-warning"><i class="fa fa-star-o"></i> Ocupado</a>
+                   ';
+                 }
+
+                
+            $tarjeta .= '<a href="http://"><button type="button" class="btn btn-dark"><i class="fa fa-eye"></i> Ver</button></a>
                       </div>
                   </div>
                   
@@ -227,8 +263,9 @@ class cursoControlador extends cursoModelo
         return $tarjeta;
     }
 
-    public function iniciar_sesion_curso(){
+    /*public function iniciar_sesion_curso(){
         session_start(['name'=>'SRCP']);
+
         if($_SESSION['sesioncurso']=="libre"){
             $Codigo=$_GET['Curso'];
            //$Codigo=1;
@@ -248,9 +285,9 @@ class cursoControlador extends cursoModelo
         }
      
        
-    }
+    }*/
 
-    public function cerrar_sesion_curso(){
+   /* public function cerrar_sesion_curso(){
         session_start(['name'=>'SRCP']);
 
         if($_SESSION['sesioncurso']=="ocupado"){
@@ -270,9 +307,9 @@ class cursoControlador extends cursoModelo
         }
      
        
-    }
+    }*/
      //mostrar cursos en el inicio
-     public function mostrar_sesion_cursos_controlador()
+    /* public function mostrar_sesion_cursos_controlador()
      {
         //session_start(['name'=>'SRCP']);
         //$categoria = mainModel::limpiar_cadena($_GET['Curso']);    
@@ -287,10 +324,96 @@ class cursoControlador extends cursoModelo
  
  
              $tarjeta .= '
-                   es '.$rows['nombre_es'].'
+                    '.$rows['nombre_es'].'
                 
                  ';
          }
          return $tarjeta;
      }
+*/
+
+     public function mostrar_sesion2_cursos_controlador()
+     {
+        $codigocurso = mainModel::limpiar_cadena($_POST['codigocurso']);
+        $codigousuario = mainModel::limpiar_cadena($_POST['codigousuario']);
+       
+
+        $datosCurso = [
+            "Codigocurso" => $codigocurso,
+            "Codigusuario" => $codigousuario,
+        
+
+        ];
+        $guardarsesionCurso = cursoModelo::agregar_sesion_curso_modelo($datosCurso);
+        if($guardarsesionCurso->rowCount()>=1){
+            $direccion=SERVERURL."sesioncurso";
+           header('location:'.$direccion);
+
+          
+        }
+
+        
+    
+    
+    }
+
+    public function cerrar_cursos2_controlador()
+    {
+       $codigocerrar= mainModel::limpiar_cadena($_POST['codigocerrar']);
+     
+       $datosCursoCerrar = [
+           "Codigocursoc" => $codigocerrar  
+
+       ];
+       $guardarsesionCurso = cursoModelo::cerrar_sesion_curso_modelo($datosCursoCerrar);
+       if($guardarsesionCurso->rowCount()>=1){
+           $direccion=SERVERURL."home";
+          header('location:'.$direccion);
+         
+       }
+ 
+   }
+
+
+    public function sesion_curso_exitoso_controlador()
+    {
+       //session_start(['name'=>'SRCP']);
+       //$categoria = mainModel::limpiar_cadena($_GET['Curso']);    
+        $tarjeta = "";
+        $conexion = mainModel::conectar();
+        $usuario=$_SESSION['codigo_srcp'];
+        $datosd = $conexion->query("
+            SELECT * FROM especialidad WHERE sesion='$usuario' ");
+
+        $datosd = $datosd->fetchAll();
+        foreach ($datosd as $rows) {
+
+
+            $tarjeta .= '<h3 class="text-primary">'.$rows['nombre_es'].'
+                   <div class="btn-group dropdown float-right">
+                        <button type="button" class="btn btn-success" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#agregarcli">
+                            Agregar Cliente
+                        </button>
+
+                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            En línea
+                        </button>
+                        <div class="dropdown-menu ">
+                            <form action="'.SERVERURL.'ajax/cursoAjax.php" method="POST">       
+                            
+                                <input type="hidden" name="codigocerrar" value="'.$rows['idespecialidad'].'">
+                                   <button  type="submit" name="cerrarcurso" class="dropdown-item text-danger " >
+                                <i class="fa fa-reply fa-fw"></i>
+                                <p class="">Cerrar Session</p>
+                            </button>
+                            </form> 
+                        </div>
+                    </div>
+                    </h3>
+                ';
+        }
+        return $tarjeta;
+    }
+
+
 }

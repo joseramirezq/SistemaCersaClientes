@@ -42,7 +42,7 @@ class cursoModelo  extends mainModel
         return $sql;
     }
 
-    protected function iniciar_sesion_curso_modelo($datos){
+   /* protected function iniciar_sesion_curso_modelo($datos){
         
          $SesionMain=mainModel::actualizar_curso_sesion($datos['Usuario'], $datos['Curso']);
       if ($SesionMain->rowCount()==1) {
@@ -54,9 +54,33 @@ class cursoModelo  extends mainModel
            
       
         return $respuesta;
-    }
+    }*/
+    protected function agregar_sesion_curso_modelo($datos){
 
-    protected function cerrar_sesion_curso_modelo($datos){
+        $sql=self::conectar()->prepare("UPDATE especialidad SET sesion=:Usuario WHERE idespecialidad=:Curso");
+    
+        $sql->bindParam(":Usuario", $datos['Codigusuario']);
+        $sql->bindParam(":Curso", $datos['Codigocurso']);
+         $sql->execute();
+         
+         return $sql;
+       
+    
+   }
+
+   protected function cerrar_sesion_curso_modelo($datos){
+
+    $sql=self::conectar()->prepare("UPDATE especialidad SET sesion='disponible' WHERE idespecialidad=:Codigocurso");
+  
+    $sql->bindParam(":Codigocurso", $datos['Codigocursoc']);
+     $sql->execute();
+     
+     return $sql;
+   
+
+}
+
+   /* protected function cerrar_sesion_curso_modelo($datos){
         
         $SesionMain=mainModel::actualizar_cerrar_curso_sesion( $datos['Curso']);
      if ($SesionMain->rowCount()==1) {
@@ -69,6 +93,6 @@ class cursoModelo  extends mainModel
           
      
        return $respuesta;
-   }
+   }*/
 }
 

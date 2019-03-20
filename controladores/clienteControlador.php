@@ -32,7 +32,7 @@
                 $numero=($consulta3->rowCount())+1;
                 $codigo=mainModel::generar_codigo_aleatorio("CLI", 1, $numero);
 
-                session_start(['name'=>'SRCP']);   
+                session_start(['name'=>'SRCP']);
                 $estado=20;
                 $usuario= $_SESSION['id_usuario'];
                 $curso=1;

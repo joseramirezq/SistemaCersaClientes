@@ -154,9 +154,6 @@
             $conexion=mainModel::conectar();
             $datos=$conexion->query("
             SELECT * FROM usuario WHERE estado_us=1 ORDER BY idusuario");
-
-           
-
             $datos=$datos->fetchAll();
             foreach($datos as $rows){
                 $idcargo=$rows['idcargo'];
@@ -345,29 +342,31 @@
                         <div class="form-group">
                                 <label for="exampleFormControlSelect1">Cargo</label>
                                 <select class="form-control form-control-lg" name="cargo" id="cargo">
-                                '.require_once("./controladores/secundariosControlador.php");
+                                ';
+                                $idcargo=$rows['idcargo'];
+                                $datoscargo=$conexion->query("
+                                SELECT * FROM cargo WHERE estado_actual=1");
+                                $datoscargo=$datoscargo->fetchAll();
+                                foreach($datoscargo as $rowsdatos){
 
-                                        //INSTANCIOAMOS LA CLASE//
-                                        $insCargos = new secundariosControlador();
-                                        echo $insCargos->cambios_cargos_controlador();
-                                .'
-                       
-                  
+                         $tableuser.='<option value="'.$rowsdatos['idcargo'].'">'.$rowsdatos['puesto'].'</option>
+                                ';}
+                         $tableuser.='
                                 </select>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Usuario</label>
-                            <input type="text" class="form-control" name="usuario" id="usuario" placeholder="DNI" required>
+                            <input type="text" class="form-control" name="usuario" id="usuario" placeholder="DNI" value="'.$rows['usuario_us'].'" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Contraseña</label>
-                            <input type="password" class="form-control" name="pass1" id="pass1"
+                            <input type="password" class="form-control" name="pass1" id="pass1" value="'.$rows['pass_us'].'" 
                                 placeholder="Contraseña" required>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputPassword1">Repetir Contraseña</label>
-                            <input type="password" class="form-control" name="pass2" id="pass2"
+                            <input type="password" class="form-control" name="pass2" id="pass2" value="'.$rows['pass_us'].'"
                                 placeholder="Repita Contraseña" required>
                         </div>
                     </div>

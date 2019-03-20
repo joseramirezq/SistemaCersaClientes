@@ -49,17 +49,13 @@ $(document).ready(function(){
 						url:'<?php echo SERVERURL ;?>ajax/sesionCursoAjax.php?Curso='+Curso,
 						success:function(data){
 								if(data=="true"){
-									window.location.href="<?php echo SERVERURL ;?>sesioncurso";
+									window.location.href="<?php echo SERVERURL ;?>sesioncurso?Curso='+Curso";
 								}
 								else if(data=="ocupado"){
 									
 									
-									window.location.href="<?php echo SERVERURL ;?>sesioncurso";
-									swal(
-										"No olvide Cerrar Sesion",
-										"Esta ocupado",
-										"warning"
-									)
+									window.location.href="<?php echo SERVERURL ;?>sesioncurso?Curso='+Curso";
+									
 								}else{
 									swal(
 										"Ocurrio un error",
