@@ -57,6 +57,8 @@ class loginControlador extends loginModelo{
                 $_SESSION['us_cargo']=$row2['puesto'];
                 $_SESSION['sesioncurso']="libre";
                 $_SESSION['curso']="libre";
+                $_SESSION['codigocliente']="";
+                $_SESSION['estadocliente']="";
                
                 $_SESSION['privilegio_srcp']=$row['permisos'];
                 $_SESSION['foto_srcp']=$row['foto_us'];

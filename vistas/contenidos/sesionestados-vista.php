@@ -6,86 +6,14 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h3 class="text-primary">Cliente: Jose Luis Ramirez Quiroz</h3>
-                <div class="btn-group dropdown ">
-                    <mark class="bg-warning text-white" >Estado 1 </mark>
-                    <mark class="bg-pink text-warning" > descripcion de estado</mark>
-                </div>
-                <hr>
-                  <!--infomacion del contacto-->
-                  <div class="row">
-                        <div class="col-md-3">
-                            <address class="">
-                                <p class="font-weight-bold">
-                                    Correo
-                                </p>
-                                <p class="mb-2">
-                                    jlramirezq@unc.edu.pe
-                                </p>
-                                <p class="font-weight-bold">
-                                    Telefono
-                                </p>
-                                <p>
-                                    964923450
-                                </p>
-                            </address>
-                        </div>
-    
-    
-                        <div class="col-md-3">
-                            <address class="">
-                                <p class="font-weight-bold">
-                                    Profesión
-                                </p>
-                                <p class="mb-2">
-                                    Ingeniero de Sistemas
-                                </p>
-                                <p class="font-weight-bold">
-                                    Grado
-                                </p>
-                                <p>
-                                    Egresado
-                                </p>
-                            </address>
-                        </div>
-    
-    
-                        <div class="col-md-3">
-                            <address class="">
-                                <p class="font-weight-bold">
-                                    Pais
-                                </p>
-                                <p class="mb-2">
-                                    Perú
-                                </p>
-                                <p class="font-weight-bold">
-                                    Departamento
-                                </p>
-                                <p>
-                                    Cajamarca
-                                </p>
-                            </address>
-                        </div>
-    
-    
-                        <div class="col-md-3">
-                            <address class="">
-                                <p class="font-weight-bold">
-                                    Distrito
-                                </p>
-                                <p class="mb-2">
-                                    Baños del Inca
-                                </p>
-                                <p class="font-weight-bold">
-                                    Direccion
-                                </p>
-                                <p>
-                                    Jr. Progreso N° 540
-                                </p>
-                            </address>
-                        </div>
-                    </div>
-                    <!--fin informacion del contacto-->
+                        <?php
+                                    // $codigo=$_GET['codigo'];
+                                     require_once("./controladores/clienteControlador.php");
+                                     $insCurso = new clienteControlador();
+                                     echo $insCurso->cliente_actualizacion_estado();
+
+                                ?>                        
+               
 
             </div>
         </div>
