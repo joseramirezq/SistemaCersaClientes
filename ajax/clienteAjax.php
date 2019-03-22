@@ -24,7 +24,7 @@ if (isset($_POST['nombre'])) {
         $codigoclienteV= $_SESSION['codigocliente'];
         echo $insVistaCliente->pasando_variable_controlador($codigoclienteV,$identificador);
         
-        $direccion=SERVERURL."sesionestados?codigo=".$codigoclienteV;
+        $direccion=SERVERURL."sesionestados";
         header('location:'.$direccion);
         //echo $insVistaCliente->agregar_cliente_controlador();
         //echo $instanciaCliente->agregar_cliente_controlador();

@@ -97,6 +97,7 @@
         $conexion=mainModel::conectar();
 
         //variables de interes
+        $idinteres="";
         $descriestado="";
         $fechacambio="";
         //SELECIONADO CURSO
@@ -106,6 +107,7 @@
         $datosEs = $datosEs->fetchAll();
         foreach ($datosEs as $rowsEs) {
             $idespecialidad=$rowsEs['idespecialidad'];
+           
         }
 
         //datos de interes que serviran par ala inseriocn 
@@ -113,8 +115,10 @@
             SELECT * FROM interes WHERE idespecialidad='$idespecialidad'AND codigocliente='$cod' ORDER by idestado ");
         $datosInteres = $datosInteres->fetchAll();
         foreach ($datosInteres as $rowsInt) {
+
             $descriestado=$rowsInt['descri_estado'];
             $fechacambio=$rowsInt['fecha_cambio_estado'];
+            $idinteres=$rowsInt['idinteres'];
         }
 
         //selecionando cliente
@@ -215,9 +219,139 @@
                         </div>
                     </div>
                     <!--fin informacion del contacto-->
+                    
+            </div>
+            </div>
+        </div>
+    </div>
+    
             ';
         }
-        $tarjetaEstado.='<h1>'.$cod.'</h1>';
+        $tarjetaEstado.='<div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h1 class="card-title"> Verifique todos los datos ingresados antes de confirmar</h1>
+                            
+                                        <div class="col-12 grid-margin">
+                                            <div class="card">
+                                            <div class="card-body">
+                                                
+                                                <form action="'.SERVERURL.'ajax/interesAjax.php" method="POST" class="forms-sample" 
+                                                autocomplete="off" enctype="multipart/form-data">
+                                                <input type="text name="idespecialidad" id="idespecialidad"  value="'.$idespecialidad.'">
+                                                <input type="text name="codigousuario" id="codigousuario"  value="'.$usuario.'">
+                                                <input type="text" name="codigocliente" id="codigocliente" value="'.$cod.'">
+                                                <input type="text" name="idinteres" id="idinteres" value="'.$idinteres.'">
+                                               
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <!--modelo de estado que se cambiara-->
+                                                        
+                                                            <!--fin del modelo que se cambiara-->
+                                                            <!--modelo de estado que se cambiara-->
+                                                           ';
+                                                                    $datosE=$conexion->query("
+                                                                    SELECT * FROM estado WHERE estado_actual=1 ORDER BY codigoestado");
+                                                           
+                                                                    $datosE=$datosE->fetchAll();
+                                                                    foreach($datosE as $rowsE){
+                                                                        $tarjetaEstado.='
+                                                                        <div class="col-sm-12">
+
+                                                                        <div class="form-group">
+                                                                        
+               
+                                                                            <div class="form-radio">
+                                                                           
+                                                                                
+                                                                              <input  type="radio" class="form-check-input" name="estado" id="estado"  value="'.$rowsE['idestado'].'" > 
+                                                                                <p> <font  style="background-color: '.$rowsE['color'].';"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>&nbsp;'.$rowsE['nombre_estado'].' : &nbsp;  '.$rowsE['descri_estado'].'</p> 
+                                                                                <i class="input-helper"></i><i class="input-helper"></i>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="form-radio">
+                                                            
+                                                                        
+                                                                        </div>
+                                                                      </div>
+                                                                      
+                                                                      
+                                                                        '; 
+                                                                    }
+                                              
+                                                          
+                                                        
+                                            $tarjetaEstado.='     </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                <!--inicio del nuevo formulario-->
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                            <!--fecha-->
+                                                            <div class="form-group">
+                                                                <div class="input-group">
+                                                                
+                                                                    <input type="datetime-local"  class="form-control" name="fechanotificacion" id="fechanotificacion">
+                                                             
+                                                                </div>
+                                                            </div>
+                                                            <!--descripcion-->
+                                                            <div class="form-group">
+                                                                <div class="input-group">
+                                                                <div class="input-group-prepend bg-primary border-primary">
+                                                                    <span class="input-group-text bg-transparent">
+                                                                    <i class=" fa fa-align-left text-white"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text" class="form-control" placeholder="Descripcion"  name="descripcion" id="descripcion" aria-describedby="colored-addon2">
+                                                                </div>
+                                                            </div>
+                                                            <!--baucher-->
+                                                            <div class="form-group">
+                                                            
+                                                                <div class="input-group">
+                                                                    <input class="form-control" type="file" name="boucher" id="boucher>
+                                                                    <div class="input-group-append bg-primary border-primary">
+                                                                        <span class="input-group-text bg-transparent">
+                                                                        <i class="fa fa-file-text-o text-white"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                        
+                                                            
+                                                        
+                                                            </div></div></div>
+                                                        </div>
+                                                        <!--findel nuevo formukario-->
+                                                    
+                                                    
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                        <div class="form-group">
+                                                        <div class="form-group">
+                                                            <button type="submit" name="actualizarinteres" class="btn btn-success"><i class="fa fa-check"></i> Actualizar</button>
+                                                            <a href="'.SERVERURL.'sesioncurso" class="btn btn-info"><i class="fa fa-meh-o"></i> Cancel</a>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </form>
+                                            </div>
+                                            
+                                            </div>
+                                        </div>
+                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
         return $tarjetaEstado;
         }
 

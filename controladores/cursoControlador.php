@@ -692,7 +692,7 @@ class cursoControlador extends cursoModelo
         foreach ($datosCliente as $rowsCliente) {
             $tarjeta .= '
                     <tr>
-                        <td>'.$rows['codigocliente'].'.</td>
+                        <td>'.$rows['codigocliente'].'</td>
                         <td>'.$rowsCliente['nombres_cli'].'</td>
                         <td>'.$rowsCliente['apellidos_cli'].'</td>
 
@@ -759,7 +759,10 @@ class cursoControlador extends cursoModelo
                             </div>
                         </td>
                         <td>
-                            07/03/2019 14:15
+                        '.$rows['fecha_notificacion'].'
+                        </td>
+                        <td>
+                        '.$rows['fecha_cambio_estado'].'
                         </td>
                         <td>
                             <a href="alumnodetalle.php" class="btn btn-inverse-dark ">Ver</a>

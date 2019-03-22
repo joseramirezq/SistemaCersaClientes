@@ -44,6 +44,8 @@
 
                                 <th>Estado</th>
                                 <th>Fecha programada</th>
+                                <th>Fecha Cambio Estado</th>
+
 
                                 <th>Detalle</th>
                             </tr>
