@@ -239,10 +239,10 @@
                                                 
                                                 <form action="'.SERVERURL.'ajax/interesAjax.php" method="POST" class="forms-sample" 
                                                 autocomplete="off" enctype="multipart/form-data">
-                                                <input type="text name="idespecialidad" id="idespecialidad"  value="'.$idespecialidad.'">
-                                                <input type="text name="codigousuario" id="codigousuario"  value="'.$usuario.'">
-                                                <input type="text" name="codigocliente" id="codigocliente" value="'.$cod.'">
-                                                <input type="text" name="idinteres" id="idinteres" value="'.$idinteres.'">
+                                                <input type="hidden" name="idespecialidad" id="idespecialidad"  value="'.$idespecialidad.'">
+                                                <input type="hidden" name="codigousuario" id="codigousuario"  value="'.$usuario.'">
+                                                <input type="hidden" name="codigocliente" id="codigocliente" value="'.$cod.'">
+                                                <input type="hidden" name="idinteres" id="idinteres" value="'.$idinteres.'">
                                                
                                                 
                                                 <div class="row">

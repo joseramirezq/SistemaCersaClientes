@@ -19,7 +19,7 @@ class interesControlador extends interesModelo
         $estado = mainModel::limpiar_cadena($_POST['estado']);
         $fechanotificacion = mainModel::limpiar_cadena($_POST['fechanotificacion']);
         $descripcion = mainModel::limpiar_cadena($_POST['descripcion']);
-        $fechaactual=date("d-m-Y H:i:s");
+        $fechaactual= date('Y-m-d H:i:s');
       //  $boucher = mainModel::limpiar_cadena($_POST['boucher']);
         
 

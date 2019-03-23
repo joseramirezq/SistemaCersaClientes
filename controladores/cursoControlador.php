@@ -482,6 +482,8 @@ class cursoControlador extends cursoModelo
        //session_start(['name'=>'SRCP']);
        //$categoria = mainModel::limpiar_cadena($_GET['Curso']);    
         $tarjeta = "";
+        
+        $contadorestados=array();
         $conexion = mainModel::conectar();
         $usuario=$_SESSION['codigo_srcp'];
         $datosd = $conexion->query("
@@ -489,6 +491,7 @@ class cursoControlador extends cursoModelo
 
         $datosd = $datosd->fetchAll();
         foreach ($datosd as $rows) {
+
 
 
             $tarjeta .= '<h3 class="text-primary">'.$rows['nombre_es'].'
@@ -610,46 +613,53 @@ class cursoControlador extends cursoModelo
                                             </p>
                                         </address>
                                     </div>
-                                </div>';
+                                </div>
+                                <div class="row ">
+                                ';
 
                                //ESTADOS
+                                 //SECCION ESTADOS
+           
+                                                    
+                          
+                                //$estado=$rows['idestado'];
+                                $to=0;
+                                $datosEstado = $conexion->query("
+                                SELECT * FROM estado");
+                                $datosEstado = $datosEstado->fetchAll();
+                                foreach ($datosEstado as $rowsEstado) {
 
-                                $tarjeta .= '   <div class="row ">
-                                    <div class="col-md-3 badge badge-warning">
+
+
+
+                                        //datos de interes 
+                                            $t=80;
+                                            $idestado=$rowsEstado['idestado'];
+                                            $idespecialidad=$rows['idespecialidad'];
+                                            $datosInteres = $conexion->query("
+                                            SELECT COUNT(*) AS totalestado FROM interes WHERE idespecialidad='$idespecialidad' AND idestado='$idestado'");
+                                        $datosInteres = $datosInteres->fetchAll();
+                                        foreach ($datosInteres as $rowsInt) {
+                                            $t=$rowsInt['totalestado'];
+                                            
+                                        
+                                    }
+
+                                 
+                                                        
+                                $tarjeta .= '   
+                                    <div class="col-md-2 badge " style="background-color:'.$rowsEstado['color'].';">
                                         <div class="wrapper d-flex justify-content-between">
                                             <div class="side-left">
-                                                <p class="mb-2">Estado 1</p>
-                                                <p class="display-3 mb-4 font-weight-light">40</p>
+                                                <p class="mb-2 ">'.$rowsEstado['nombre_estado'].'</p>
+                                                <p class="display-3 mb-4 font-weight-light text-white" >'.$t.'</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>';
+                                }
 
-                                    <div class="col-md-3 badge badge-danger">
-                                        <div class="wrapper d-flex justify-content-between">
-                                            <div class="side-left">
-                                                <p class="mb-2">Estado 2</p>
-                                                <p class="display-3 mb-4 font-weight-light">45</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 badge badge-info">
-                                        <div class="wrapper d-flex justify-content-between">
-                                            <div class="side-left">
-                                                <p class="mb-2">Estado 3</p>
-                                                <p class="display-3 mb-4 font-weight-light">20</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 badge badge-success">
-                                        <div class="wrapper d-flex justify-content-between">
-                                            <div class="side-left">
-                                                <p class="mb-2">Estado 4</p>
-                                                <p class="display-3 mb-4 font-weight-light">25</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                $tarjeta .= '   
+                          
                                 </div>
                             </div>
                         </div>
@@ -683,7 +693,7 @@ class cursoControlador extends cursoModelo
         $datosInteres = $datosInteres->fetchAll();
         foreach ($datosInteres as $rows) {
 
-        //SELECIONAR
+        //SELECIONAR cliente
         $codigoCliente=$rows['codigocliente'];
         $datosCliente = $conexion->query("
         SELECT * FROM cliente WHERE codigocliente='$codigoCliente' ");
