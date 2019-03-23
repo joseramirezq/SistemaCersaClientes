@@ -62,7 +62,7 @@ class cursoControlador extends cursoModelo
             $datos2 = $conexion->query("
             SELECT * FROM categoria WHERE idcategoria='$idcat'");
             foreach ($datos2 as $rows2) {
-                $cat = $rows2['nombre_cat'];
+                $categoria = $rows2['nombre_cat'];
             }
 
 
@@ -87,7 +87,7 @@ class cursoControlador extends cursoModelo
             $table .= '
                 <tr>
                             <td>' . $rows['idespecialidad'] . '</td>
-                            <td>' . $cat . '</td>
+                            <td>' . $categoria . '</td>
                             <td>' . $rows['nombre_es'] . '</td>
                             <td>' . $cat . '</td>
                             <td>' . $rows['fecha_inicio'] . '</td>
@@ -474,6 +474,48 @@ class cursoControlador extends cursoModelo
          
        }
  
+   }
+
+   public function top_curso_controlador(){
+    $tarjeta = "";
+
+    $conexion=mainModel::conectar();
+    $datos = $conexion->query("
+    SELECT * FROM especialidad WHERE estado_actual=0  ORDER BY 	fecha_inicio");
+
+    $datos = $datos->fetchAll();
+    foreach ($datos as $rows) {
+
+        
+        
+
+        $tarjeta .= '
+        <div class="col-sm-4 col-md-3 grid-margin stretch-card ¿">
+            <div class="card  badge-success">
+                <div class="card-body">
+                    <h4 class="card-title text-white text-center"><i class="fa fa-graduation-cap"></i>'.$rows['nombre_es'].'</h4>
+                    <div class="media">
+                        <h1>1 | </h1>
+                        <div class="media-body">
+                           ';
+
+                        $idinteres= $rows['idespecialidad'];
+                        $datos2 = $conexion->query("
+                        SELECT COUNT(*)  AS total FROM interes WHERE idespecialidad=$idinteres");
+                        $datos2 = $datos2->fetchAll();
+                        foreach ($datos2 as $rows2) {
+                            
+                        $tarjeta .= ' <h4 class="card-text text-center">Número de Participantes : '.$rows2['total'].'</h4>';
+
+                          }
+                                
+                         $tarjeta .= '</div>
+                    </div>
+                </div>
+            </div>
+        </div>';
+   }
+    return $tarjeta;
    }
 
 
