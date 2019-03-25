@@ -25,6 +25,7 @@ class cursoControlador extends cursoModelo
         $horascertificado = mainModel::limpiar_cadena($_POST['horascertificado']);
         $modalidad = mainModel::limpiar_cadena($_POST['modalidad']);
         $docente = mainModel::limpiar_cadena($_POST['docente']);
+        $sesion="disponible";
 
         $datosCurso = [
             "Categoria" => $categoria,
@@ -39,10 +40,18 @@ class cursoControlador extends cursoModelo
             "Costoalternativo" => $costoalternativo,
             "Horascerti" => $horascertificado,
             "Modalidad" => $modalidad,
-            "Docente" => $docente
+            "Docente" => $docente,
+            "Sesion"=>$sesion
 
         ];
         $guardarCurso = cursoModelo::agregar_curso_modelo($datosCurso);
+        if($guardarCurso->rowCount()>=1){
+            $direccion=SERVERURL."home";
+           header('location:'.$direccion);
+
+          
+        }
+
     }
 
 
@@ -953,7 +962,7 @@ class cursoControlador extends cursoModelo
                                                     </div>
                                                     <div class="row">
                                                         <div class="form-group">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Agregar</button>
+                                                            <button type="submit" name="agregar_cliente" class="btn btn-success"><i class="fa fa-check"></i> Agregar</button>
                                                             <button type="button" class=" btn btn-info" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true" class=""><i class="fa fa-meh-o"></i> Cancel</a></span>
                                                             </button>

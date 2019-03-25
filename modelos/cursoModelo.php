@@ -16,9 +16,9 @@ class cursoModelo  extends mainModel
 
         $sql = self::conectar()->prepare("INSERT INTO 
         especialidad(idcategoria, nombre_es, descripcion_es, duracion_es, fecha_inicio, fecha_fin ,
-        horas_certificado, costo_matricula, costo_certi, costo_alternativo, horario, docente, modalidad)
+        horas_certificado, costo_matricula, costo_certi, costo_alternativo, horario, docente, modalidad, sesion)
         VALUES(:Categoria, :Nombre, :Descripcion, :Duracion , :FechaI, :FechaF, :Horascerti, :Costomatricula,
-        :Costocerti, :Costoalternativo, :Horario, :Docente, :Modalidad )");
+        :Costocerti, :Costoalternativo, :Horario, :Docente, :Modalidad, :Sesion )");
 
        
 
@@ -35,6 +35,7 @@ class cursoModelo  extends mainModel
         $sql->bindParam(":Horario", $datos['Horario']);
         $sql->bindParam(":Docente", $datos['Docente']);
         $sql->bindParam(":Modalidad", $datos['Modalidad']);
+        $sql->bindParam(":Sesion", $datos['Sesion']);
 
 
 

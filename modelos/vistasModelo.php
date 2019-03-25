@@ -15,6 +15,7 @@ class vistasModelo
             "agregarcliente",
             "detallecliente",
             "editarcliente",
+            "estadisticascliente",
 
             //vistas curso
             "listacurso",
