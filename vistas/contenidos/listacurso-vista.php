@@ -20,31 +20,7 @@
 
 
 <!--descripcion del curso y de los estados -->
-<div class="row">
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title text-INFO mb-2">TOP 4 CURSOS Y DIPLOMADOS</h2>
 
-                <!--Estadisticas de los clientes-->
-
-                <div class="row ">
-
-                <?php
-                        require_once("./controladores/cursoControlador.php");
-                        $instopCurso = new cursoControlador();
-                     
-                       // $variable=1;
-                    echo $instopCurso->top_curso_controlador();
-
-                    ?>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

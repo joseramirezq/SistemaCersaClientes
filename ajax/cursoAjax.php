@@ -18,6 +18,13 @@ if(isset($_POST['cerrarcurso'])){
    $instanciaCursoCerrar= new cursoControlador();
    echo  $instanciaCursoCerrar->cerrar_cursos2_controlador();
   
+}else if(isset($_POST['verinfocurso'])){
+   require_once("../controladores/cursoControlador.php");
+   
+   //INSTANCIOAMOS LA CLASE
+   $instanciaCurso= new cursoControlador();
+   echo  $instanciaCurso->ver_curso_controlador();
+  
 }
 
 else if(isset($_POST['nombre'])){

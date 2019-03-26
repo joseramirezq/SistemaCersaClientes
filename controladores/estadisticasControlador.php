@@ -38,9 +38,10 @@
                 $totalhoy=$rows['TOTALHOY'];
             }
 
-            $table.='   <p class="mb-2">Total de Clientes</p> <p class="display-3 mb-4 font-weight-light">'.$cantidadCli.'</p>';
-            $table.='    <p class="mb-2">Clientes Nuevos</p><p class="display-3 mb-4 font-weight-light">'.$totalhoy.'</p> </div>
-            </div>';
+            $table.='   <p class="mb-2">Total de Clientes</p> <p class="display-3 mb-4 font-weight-light">'.$cantidadCli.'</p></div></div>
+            ';
+          //  $table.='    <p class="mb-2">Clientes Nuevos</p><p class="display-3 mb-4 font-weight-light">'.$totalhoy.'</p> </div>
+           // </div>';
         
             //cantidad de estados
             $cantestados="";
@@ -54,13 +55,13 @@
             $table.='
             <div class="wrapper">
                             <div class="d-flex justify-content-between">
-                            <p class="mb-2">TOTAL DE ESTADOS</p>
-                            <p class="mb-2 text-primary">100% -'.$cantestados.'</p>
+                            <p class="mb-2">TOTAL DE CLIENTES EN DIFERENTES ESTADOS</p>
+                            <p class="mb-2 text-warning">'.$cantestados.'</p>
                             </div>
                             <div class="progress">
-                            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-            </div><hr>';
+            </div><hr><h4>Clientes por estados de Interes</h4>';
 
 
             //estados de cada interes
@@ -91,7 +92,7 @@
             <div class="wrapper">
             <div class=" d-flex justify-content-between">
             <p class="mb-2">'.$rowsestadog['nombre_estado'].'</p>
-            <p class="mb-2 text-primary">'.$porcentaje.'% -'.$estados.'</p>
+            <p class="mb-2 text-primary">'.round($porcentaje,2).'% -'.$estados.'</p>
             </div>
             <div class="progress">
             <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: '.$porcentaje.'%" aria-valuenow="'.$estados.'" aria-valuemin="0" aria-valuemax="'.$cantestados.'"></div>
@@ -114,35 +115,33 @@
         
         public function top_clientes_controlador(){
             $tabletop="";
+            $contador=0;
                     
             $conexion=mainModel::conectar();
 
             //cantidad de clientes en total
             $datosCli = $conexion->query("
-            SELECT * FROM cliente LIMIT 10");
+            SELECT * FROM cliente ORDER BY  fecha_registro DESC LIMIT 10 ");
             $datosCli = $datosCli->fetchAll();
             foreach ($datosCli as $rowsCli) {
+              $contador++;
                 $tabletop.='
                 <tr>
                 <td class="font-weight-medium">
-                  1
+                 '.$contador.'
                 </td>
+                <td class="font-weight-medium">
+                '.$rowsCli['codigocliente'].'
+              </td>
                 <td>
                 '.$rowsCli['nombres_cli'].'
                 </td>
                 <td>
-                  <div class="progress">
-                    <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
+                '.$rowsCli['apellidos_cli'].'
                 </td>
+              
                 <td>
-                  $ 77.99
-                </td>
-                <td class="text-danger"> 53.64%
-                  <i class="mdi mdi-arrow-down"></i>
-                </td>
-                <td>
-                  May 15, 2015
+                '.$rowsCli['fecha_registro'].'
                 </td>
               </tr>
            ';

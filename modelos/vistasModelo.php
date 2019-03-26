@@ -22,6 +22,7 @@ class vistasModelo
             "agregarcurso",
             "detallecurso",
             "editarcurso",
+            "estadisticascurso",
 
             //vista usuarios
             "listausuario",
@@ -33,6 +34,7 @@ class vistasModelo
 
             //sesiones
             "sesioncurso",
+            "vercurso",
             "sesionestados",
 
             //otrasvistas

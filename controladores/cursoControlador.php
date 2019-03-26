@@ -249,7 +249,12 @@ class cursoControlador extends cursoModelo
                  }
 
                 
-            $tarjeta .= '<a href="http://"><button type="button" class="btn btn-dark"><i class="fa fa-eye"></i> Ver</button></a>
+            
+            $tarjeta .= '<form action="'.SERVERURL.'ajax/cursoAjax.php" method="POST">
+            <input type="hidden" name="codigocursover" value="'.$rows['idespecialidad'].'">
+            <button type="submit" name="verinfocurso"  class="btn btn-dark"><i class="fa fa-eye"></i> Ver </button>
+             </form>  
+            
                       </div>
                   </div>
                   
@@ -343,10 +348,14 @@ class cursoControlador extends cursoModelo
                         $tarjeta .= '<a href="" class="btn btn-warning"><i class="fa fa-star-o"></i> Ocupado</a>
                        ';
                      }
-    
+                     
+
+                     $tarjeta .= '<form action="'.SERVERURL.'ajax/cursoAjax.php" method="POST">
+            <input type="hidden" name="codigocursover" value="'.$rows['idespecialidad'].'">
+            <button type="submit" name="verinfocurso"  class="btn btn-dark"><i class="fa fa-eye"></i> Ver </button>
+             </form>  
                     
-                $tarjeta .= '<a href="http://"><button type="button" class="btn btn-dark"><i class="fa fa-eye"></i> Ver</button></a>
-                          </div>
+                     </div>
                       </div>
                       
                     </div>
@@ -466,6 +475,17 @@ class cursoControlador extends cursoModelo
         
     
     
+    }
+
+    public function ver_curso_controlador(){
+        $codigocurso = mainModel::limpiar_cadena($_POST['codigocursover']);
+       // $guardarsesionCurso = cursoModelo::agregar_sesion_curso_modelo($datosCurso);
+       session_start(['name'=>'SRCP']);
+       $_SESSION['cursover']=$codigocurso;
+            $direccion=SERVERURL."vercurso";
+           header('location:'.$direccion);
+
+        
     }
 
     public function cerrar_cursos2_controlador()
@@ -720,6 +740,136 @@ class cursoControlador extends cursoModelo
         return $tarjeta;
     }
 
+    public function ver_sesion_curso_controlador(){
+        $tarjeta = "";
+        $idesp=$_SESSION['cursover'];
+        $conexion = mainModel::conectar();
+        $datosd = $conexion->query("
+        SELECT * FROM especialidad WHERE idespecialidad='$idesp' ");
+
+       $datosd = $datosd->fetchAll();
+       foreach ($datosd as $rows) {
+
+        $tarjeta .= '<h3 class="text-primary">'.$rows['nombre_es'].'
+               <div class="btn-group dropdown float-right">
+                  
+                    <div class="dropdown-menu ">
+                        <form action="'.SERVERURL.'ajax/cursoAjax.php" method="POST">       
+                        
+                            <input type="hidden" name="codigocerrar" value="'.$rows['idespecialidad'].'">
+                               <button  type="submit" name="cerrarcurso" class="dropdown-item text-danger " >
+                            <i class="fa fa-reply fa-fw"></i>
+                            <p class="">Cerrar Session</p>
+                        </button>
+                        </form> 
+                    </div>
+                </div>
+                </h3>
+            ';
+
+            //Descripcion del curso 
+            $tarjeta .= '
+                <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title text-success mb-2">
+                                Detalle del Curso/Diplomado
+                            </h2>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <address class="">
+                                        <p class="font-weight-bold">
+                                            Fecha
+                                        </p>
+                                        <p class="mb-2">
+                                        '.$rows['fecha_inicio'].'
+                                        </p>
+                                        <p class="font-weight-bold">
+                                            Duración
+                                        </p>
+                                        <p>
+                                        '.$rows['duracion_es'].'
+                                        </p>
+                                    </address>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <address class="">
+                                        <p class="font-weight-bold">
+                                            Modalidad
+                                        </p>
+                                       
+                                         '; 
+                                         
+                                if($rows['modalidad']==1){
+                                    $tarjeta .= '<p class="mb-2">Virtual en Vivo</p>';
+                                        }
+                                      else  if($rows['modalidad']==2){
+                                            $tarjeta .= '<p class="mb-2">Solo Accesos</p>';
+                                                }else{
+                                                    $tarjeta .= '<p class="mb-2">Presencial</p>';
+                                          
+                                                }
+                                $tarjeta .= ' 
+                                        <p class="font-weight-bold">
+                                            Certificacion
+                                        </p>
+                                        <p>
+                                        '.$rows['horas_certificado'].'
+                                        </p>
+                                    </address>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <address class="">
+                                        <p class="font-weight-bold">
+                                            Costo matricula
+                                        </p>
+                                        <p class="mb-2">
+                                        '.$rows['costo_matricula'].'
+                                        </p>
+                                        <p class="font-weight-bold">
+                                            Costo certificado
+                                        </p>
+                                        <p>
+                                        '.$rows['costo_certi'].'
+                                        </p>
+                                    </address>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <address class="">
+                                        <p class="font-weight-bold">
+                                            Costo total
+                                        </p>
+                                        '; 
+                                         
+                                        $costototal=$rows['costo_matricula']+$rows['costo_certi'];
+                                        
+                                            $tarjeta .= '  <p class="mb-2">
+                                           '.$costototal.'
+                                        </p>';
+
+                                               
+                                        $tarjeta .= '  
+                                      
+                                        <p class="font-weight-bold">
+                                            Costo Alternativo
+                                        </p>
+                                        <p>
+                                            '.$rows['costo_alternativo'].'
+                                        </p>
+                                    </address>
+                                </div>
+                            </div>
+                         
+                            ';
+                        }
+        return $tarjeta;
+    }
+
     public function tabla_interesados_controlador()
     {
        //session_start(['name'=>'SRCP']);
@@ -832,6 +982,111 @@ class cursoControlador extends cursoModelo
         }}
         return $tarjeta;
     }
+
+    public function solover_tabla_interesados_controlador()
+    {
+       //session_start(['name'=>'SRCP']);
+       //$categoria = mainModel::limpiar_cadena($_GET['Curso']);    
+        $idespecialidad=0;
+        $tarjeta = "";
+        $nombreusuario="";
+        $conexion = mainModel::conectar();
+
+        //SELECIONADO CURSO
+        $idespe=$_SESSION['cursover'];
+         
+        //SECCION INTERES
+        $datosInteres = $conexion->query("
+            SELECT * FROM interes WHERE idespecialidad='$idespe' ORDER by idestado ");
+        $datosInteres = $datosInteres->fetchAll();
+        foreach ($datosInteres as $rows) {
+
+            
+            $coduser=$rows['idusuario'];
+            $datosUusario = $conexion->query("
+            SELECT nombre_us FROM usuario WHERE idusuario='$coduser'");
+        $datosUusario = $datosUusario->fetchAll();
+        foreach ($datosUusario as $rowsUsuario) {
+            $nombreusuario=$rowsUsuario['nombre_us'];
+        }
+
+        //SELECIONAR cliente
+        $codigoCliente=$rows['codigocliente'];
+        $datosCliente = $conexion->query("
+        SELECT * FROM cliente WHERE codigocliente='$codigoCliente' ");
+        $datosCliente = $datosCliente->fetchAll();
+     
+        foreach ($datosCliente as $rowsCliente) {
+            $tarjeta .= '
+                    <tr>
+                        <td>'.$rows['codigocliente'].'</td>
+                        <td>'.$rowsCliente['nombres_cli'].'</td>
+                        <td>'.$rowsCliente['apellidos_cli'].'</td>
+                        <td>
+                            <div class="btn-group dropdown float-right">';
+                          
+                            
+                    //SECCION ESTADOS
+                    $estado=$rows['idestado'];
+                    $datosEstado = $conexion->query("
+                    SELECT * FROM estado WHERE 	idestado='$estado' ");
+                    $datosEstado = $datosEstado->fetchAll();
+                    foreach ($datosEstado as $rowsEstado) {
+                     $tarjeta .= '<button type="button" style="background-color:'.$rowsEstado['color'].';" class="btn  btn-sm white-text " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                 '.$rowsEstado['nombre_estado'].'
+                                </button>
+
+                                <button type="button" style="background-color:'.$rowsEstado['color'].';" class=" btn btn-inverse btn-sm" aria-haspopup="true" aria-expanded="false" data-toggle="modal" data-target="#'.$rowsEstado['idestado'].'">
+                                      <i class="fa fa-comments-o"></i>
+                                </button>
+
+                                <!--NODAL DESCRIPCION DE ESTADO ACTUAL-->
+
+                                <div class="modal fade" id="'.$rowsEstado['idestado'].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <!--Header-->
+                                        <div class="modal-header " style="background-color:'.$rowsEstado['color'].';">
+                                            <h3 class="text-white text-center">Estado 1</h3>
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true" class="white-text">×</span>
+                                            </button>
+                                        </div>
+
+                                        <!--Body-->
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <p class="text-center">Fecha 01/02/2019</p>
+                                                <hr />
+                                                <p>'.$rows['descri_estado'].'
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+
+                    }
+
+                    $tarjeta .= '     
+                            </div>
+                        </td>
+                       
+                        <td>
+                        '.$rows['fecha_cambio_estado'].'
+                        </td>
+                        <td>
+                        '.$nombreusuario.'
+                        </td>
+                       
+                        <td>
+                            <a href="alumnodetalle.php" class="btn btn-inverse-dark ">Ver</a>
+                        </td>
+                     </tr>';
+        }}
+        return $tarjeta;
+    }
+
 
 
     
@@ -983,6 +1238,7 @@ class cursoControlador extends cursoModelo
         
         return $tarjeta;
     }
+
 
    
    
